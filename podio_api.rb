@@ -1,4 +1,5 @@
 require 'active_support'
+require 'active_support/core_ext'
 require 'podio'
 require './settings'
 require 'sinatra/base'
