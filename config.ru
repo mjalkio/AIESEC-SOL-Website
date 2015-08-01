@@ -1,3 +1,4 @@
+require 'active_support'
 require 'rubygems'
 require 'bundler'
 Bundler.require
