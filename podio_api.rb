@@ -19,8 +19,8 @@ module PodioAPI
     def self.active_trainers()
         connect()
         response = Podio::Item.find_by_filter_values(Settings.app_id,
-                                                     {'current-status': [1]},
-                                                     {'limit': 200})
+                                                     {'current-status' => [1]},
+                                                     {'limit' => 200})
         return response.all
     end
 
