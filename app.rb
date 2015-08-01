@@ -1,11 +1,96 @@
 require 'sinatra'
+require './podio_api'
 
-get '/' do
-  # use the views/index.erb file
-  erb :index
+
+# To avoid using a full database, a list of Trainer objects is saved on disk
+File.open('saved_trainers.marshal') do |f|
+    # TODO: Should not be reassigning to a constant variable
+    SAVED_TRAINERS = Marshal.load(f)
 end
 
-get '/agent' do
-  # use the views/agent.erb file
-  erb :agent
+# Update the website once a day automatically
+Thread.new {
+    while true do
+        begin
+            SAVED_TRAINERS = updated_trainers()
+        rescue Podio::RateLimitError
+            # If we hit the rate error, ignore it
+            puts('Hit rate limit on automatic update.')
+        end
+        sleep(86400) # sleep for one day
+    end
+}
+
+
+def updated_trainers()
+    trainers = Array.new
+
+    PodioAPI.active_trainers().each do |t|
+        trainer = Trainer.new(t)
+        trainers.push(trainer)
+    end
+
+    trainers.sort!
+
+    File.open('saved_trainers.marshal', 'w+') do |f|
+        Marshal.dump(trainers, f)
+    end
+
+    Thread.new {
+        PodioAPI.active_trainers().each do |t|
+            PodioAPI.download_photo(t)
+        end
+    }
+
+    return trainers
+end
+
+
+# Render /views/index.erb, the main page for this site
+get '/' do
+    training_areas = []
+    regions = []
+
+    SAVED_TRAINERS.each do |t|
+        t.functions_can_train_in.each do |area|
+            training_areas.push(area) unless training_areas.include?(area)
+        end
+
+        regions.push(t.region) unless regions.include?(t.region)
+    end
+
+    regions.sort!
+
+    # Strange this makes it sorted in: General, Basic, Advanced order
+    training_areas.sort!.reverse!
+
+    erb :index, :locals => { :trainers => SAVED_TRAINERS,
+                             :training_areas => training_areas,
+                             :regions => regions }
+end
+
+
+# Connect to Podio and pull down fresh information for all trainers
+# Save on disk to saved_trainers.marshal
+get '/update' do
+    begin
+        SAVED_TRAINERS = updated_trainers()
+    rescue Podio::RateLimitError => error
+        # If we hit the rate limit, print error
+        return "You're making too many requests to Podio: " + error.message
+    end
+
+    erb :index, :locals => { :trainers => SAVED_TRAINERS }
+end
+
+
+# Print all trainers currently in memory on server
+get '/trainers' do
+    trainers_string = ''
+
+    SAVED_TRAINERS.each do |t|
+        trainers_string += t.to_s + '<br />'
+    end
+
+    return trainers_string
 end
