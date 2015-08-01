@@ -8,19 +8,6 @@ File.open('saved_trainers.marshal') do |f|
     SAVED_TRAINERS = Marshal.load(f)
 end
 
-# Update the website once a day automatically
-Thread.new {
-    while true do
-        begin
-            SAVED_TRAINERS = updated_trainers()
-        rescue Podio::RateLimitError
-            # If we hit the rate error, ignore it
-            puts('Hit rate limit on automatic update.')
-        end
-        sleep(86400) # sleep for one day
-    end
-}
-
 
 def updated_trainers()
     trainers = Array.new
