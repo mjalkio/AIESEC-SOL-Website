@@ -17,6 +17,7 @@
     <!-- Custom CSS -->
     <link href="css/freelancer.css" rel="stylesheet">
     <link href="css/aiesec.css" rel="stylesheet">
+    <link href="css/sweetalert.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -95,26 +96,6 @@
                     <hr class="star-primary">
                 </div>
             </div>
-
-            <div class="row" id="training-areas">
-                <div class="col-lg-12 text-center">
-                    <p>My trainer needs to know...</p>
-                    <% training_areas.each do |area| %>
-                        <button type="button" <%= "id='#{ area }'"%> class="btn btn-info btn-sm area-btn" data-toggle="button" ><%= area %></button>
-                    <% end %>
-                </div>
-            </div>
-
-            <div class="row" id="regions">
-                <div class="col-lg-12 text-center">
-                    <p>They can be from...</p>
-                    <% regions.each do |region| %>
-                        <button type="button" <%= "id='#{ region }'"%> class="btn btn-success btn-sm region-btn" data-toggle="button" ><%= region %></button>
-                    <% end %>
-                </div>
-            </div>
-
-            <br />
 
             <div class="row" id="trainers">
                 <% i = 0 %>
@@ -244,10 +225,24 @@
     </footer>
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-top page-scroll visible-xs visible-sm">
-        <a class="btn btn-primary" href="#page-top">
+    <div class="scroll-top page-scroll">
+        <button type="button" id="filter" class="btn btn-warning">Filter</button>
+        <a class="btn btn-primary" id="back-to-top" href="#page-top">
             <i class="fa fa-chevron-up"></i>
         </a>
+    </div>
+
+    <!-- Hidden filter buttons -->
+    <div class="hidden" id="hidden-filter-buttons">
+        <p>My trainer needs to know...</p>
+        <% training_areas.each do |area| %>
+            <button type="button" <%= "id='#{ area }'"%> class="btn btn-info btn-sm area-btn" data-toggle="button" ><%= area %></button>
+        <% end %>
+
+        <p>They can be from...</p>
+        <% regions.each do |region| %>
+            <button type="button" <%= "id='#{ region }'"%> class="btn btn-success btn-sm region-btn" data-toggle="button" ><%= region %></button>
+        <% end %>
     </div>
 
     <!-- Portfolio Modals -->
@@ -326,6 +321,7 @@
     <script src="js/freelancer.js"></script>
     <script src="js/aiesec.js"></script>
     <script src="js/jquery.quicksand.js"></script>
+    <script src="js/sweetalert.min.js"></script>
 
 </body>
 
