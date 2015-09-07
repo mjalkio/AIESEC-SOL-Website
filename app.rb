@@ -67,7 +67,7 @@ get '/update' do
         return "You're making too many requests to Podio: " + error.message
     end
 
-    erb :index, :locals => { :trainers => SAVED_TRAINERS }
+    print('Updating page. Images may take time to update.')
 end
 
 
