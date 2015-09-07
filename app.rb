@@ -12,7 +12,9 @@ end
 def updated_trainers()
     trainers = Array.new
 
-    PodioAPI.active_trainers().each do |t|
+    active = PodioAPI.active_trainers()
+
+    active.each do |t|
         trainer = Trainer.new(t)
         trainers.push(trainer)
     end
@@ -24,7 +26,7 @@ def updated_trainers()
     end
 
     Thread.new {
-        PodioAPI.active_trainers().each do |t|
+        active.each do |t|
             PodioAPI.download_photo(t)
         end
     }
