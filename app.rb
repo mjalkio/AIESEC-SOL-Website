@@ -25,11 +25,11 @@ def updated_trainers()
         Marshal.dump(trainers, f)
     end
 
-    Thread.new {
-        active.each do |t|
-            PodioAPI.download_photo(t)
-        end
-    }
+    # Thread.new {
+    #     active.each do |t|
+    #         PodioAPI.download_photo(t)
+    #     end
+    # }
 
     return trainers
 end
@@ -69,7 +69,7 @@ get '/update' do
         return "You're making too many requests to Podio: " + error.message
     end
 
-    print('Updating page. Images may take time to update.')
+    return 'Updating page. Images may take time to update.'
 end
 
 

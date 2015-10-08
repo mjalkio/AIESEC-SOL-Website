@@ -152,6 +152,7 @@ class Trainer
     attr_reader :name, :local_committee, :region, :num_trainings, :photo_name, :functions_can_train_in, :badges
 
     def initialize(trainer)
+        @id = trainer.item_id
         @name = PodioAPI.trainer_name(trainer)
         @local_committee = PodioAPI.trainer_lc(trainer)
         @region = PodioAPI.trainer_region(trainer)
