@@ -69,13 +69,13 @@ get '/update' do
         return "You're making too many requests to Podio: " + error.message
     end
 
-    return 'Updating page. Images may take time to update.'
+    return 'Updating page. To update images go to ' + request.base_url + '/trainers'
 end
 
 
 # Print all trainers currently in memory on server
 get '/trainers' do
-    trainers_string = ''
+    trainers_string = 'Click a name to update their photo:<br />'
 
     SAVED_TRAINERS.each do |t|
         trainers_string += '<a href="' + request.base_url + '/update/' + t.id + '">'
