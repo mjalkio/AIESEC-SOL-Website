@@ -78,7 +78,7 @@ get '/trainers' do
     trainers_string = ''
 
     SAVED_TRAINERS.each do |t|
-        trainers_string += '<a href="' + request.base_url + '/update/' + t.item_id + '">'
+        trainers_string += '<a href="' + request.base_url + '/update/' + t.id + '">'
         trainers_string += t.to_s
         trainers_string += '</a><br />'
     end
