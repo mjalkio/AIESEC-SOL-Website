@@ -149,7 +149,7 @@ end
 class Trainer
     include Comparable
 
-    attr_reader :name, :local_committee, :region, :num_trainings, :photo_name, :functions_can_train_in, :badges
+    attr_reader :id, :name, :local_committee, :region, :num_trainings, :photo_name, :functions_can_train_in, :badges
 
     def initialize(trainer)
         @id = trainer.item_id
