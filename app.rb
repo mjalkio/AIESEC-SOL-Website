@@ -69,7 +69,7 @@ get '/update' do
         return "You're making too many requests to Podio: " + error.message
     end
 
-    return 'Updating page. To update images go to ' + request.base_url + '/trainers'
+    return 'Updating page. To update images go to #{ request.base_url }/trainers'
 end
 
 
@@ -78,7 +78,7 @@ get '/trainers' do
     trainers_string = 'Click a name to update their photo:<br />'
 
     SAVED_TRAINERS.each do |t|
-        trainers_string += '<a href="' + request.base_url + '/update/' + t.id + '">'
+        trainers_string += '<a href="#{ request.base_url }/update/#{ t.id }">'
         trainers_string += t.to_s
         trainers_string += '</a><br />'
     end
