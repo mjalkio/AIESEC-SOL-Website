@@ -78,8 +78,18 @@ get '/trainers' do
     trainers_string = ''
 
     SAVED_TRAINERS.each do |t|
-        trainers_string += t.to_s + '<br />'
+        trainers_string += '<a href="' + request.base_url + '/update/' + t.item_id + '">'
+        trainers_string += t.to_s
+        trainers_string += '</a><br />'
     end
 
     return trainers_string
+end
+
+
+# Update the photo for the trainer with this ID
+get '/update/:id' do
+    t = PodioAPI.get_trainer(params['id'])
+    PodioAPI.download_photo(t)
+    return 'Photo should be updated!'
 end
