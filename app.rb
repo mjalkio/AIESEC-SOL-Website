@@ -89,7 +89,13 @@ end
 
 # Update the photo for the trainer with this ID
 get '/update/:id' do
-    t = PodioAPI.get_trainer(params['id'])
-    PodioAPI.download_photo(t)
+    begin
+        t = PodioAPI.get_trainer(params['id'])
+        PodioAPI.download_photo(t)
+    rescue Podio::RateLimitError => error
+        # If we hit the rate limit, print error
+        return "You're making too many requests to Podio: " + error.message
+    end
+
     return 'Photo should be updated!'
 end
