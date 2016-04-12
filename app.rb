@@ -38,24 +38,18 @@ end
 # Render /views/index.erb, the main page for this site
 get '/' do
     training_areas = []
-    regions = []
 
     SAVED_TRAINERS.each do |t|
         t.functions_can_train_in.each do |area|
             training_areas.push(area) unless training_areas.include?(area)
         end
-
-        regions.push(t.region) unless regions.include?(t.region)
     end
-
-    regions.sort!
 
     # Strange this makes it sorted in: General, Basic, Advanced order
     training_areas.sort!.reverse!
 
     erb :index, :locals => { :trainers => SAVED_TRAINERS,
-                             :training_areas => training_areas,
-                             :regions => regions }
+                             :training_areas => training_areas }
 end
 
 

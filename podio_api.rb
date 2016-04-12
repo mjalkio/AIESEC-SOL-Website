@@ -55,29 +55,25 @@ module PodioAPI
 
 
     def self.trainer_name(trainer)
-        return get_single_value_field(trainer, 14992170)
+        return get_single_value_field(trainer, 119866778)
     end
+
 
     def self.trainer_lc(trainer)
-        return get_single_value_field(trainer, 15000638)['text']
-    end
-
-
-    def self.trainer_region(trainer)
-        return get_single_value_field(trainer, 85718052)['text']
+        return get_single_value_field(trainer, 119866779)['text']
     end
 
 
     def self.trainer_email(trainer)
-        return get_single_value_field(trainer, 14992177)
+        return get_single_value_field(trainer, 119866780)
     end
 
 
     def self.number_of_trainings(trainer)
-        if get_single_value_field(trainer, 84814737).nil?
+        if get_single_value_field(trainer, 119866786).nil?
             return '0'
         else
-            return get_single_value_field(trainer, 84814737)['text']
+            return get_single_value_field(trainer, 119866786)['text']
         end
     end
 
@@ -86,7 +82,7 @@ module PodioAPI
         fields = trainer.fields
         areas = []
         fields.each do |field|
-            if field['field_id'] == 84814972
+            if field['field_id'] == 119866784
                 areas = field['values']
                 break
             end
@@ -105,7 +101,7 @@ module PodioAPI
         fields = trainer.fields
         experiences = []
         fields.each do |field|
-            if field['field_id'] == 25034685
+            if field['field_id'] == 119866785
                 experiences = field['values']
                 break
             end
@@ -121,7 +117,7 @@ module PodioAPI
 
 
     def self.photo_name(trainer)
-        file_field = get_single_value_field(trainer, 14992185)
+        file_field = get_single_value_field(trainer, 119866788)
         if file_field.nil?
             return 'photo_not_found.jpg'
         else
@@ -131,7 +127,7 @@ module PodioAPI
 
 
     def self.download_photo(trainer)
-        file_field = get_single_value_field(trainer, 14992185)
+        file_field = get_single_value_field(trainer, 119866788)
         unless file_field.nil?
             file_name = file_field['name']
             file_id = file_field['file_id']
@@ -149,13 +145,12 @@ end
 class Trainer
     include Comparable
 
-    attr_reader :id, :name, :local_committee, :region, :num_trainings, :photo_name, :functions_can_train_in, :badges
+    attr_reader :id, :name, :local_committee, :num_trainings, :photo_name, :functions_can_train_in, :badges
 
     def initialize(trainer)
         @id = trainer.item_id
         @name = PodioAPI.trainer_name(trainer)
         @local_committee = PodioAPI.trainer_lc(trainer)
-        @region = PodioAPI.trainer_region(trainer)
         @num_trainings = PodioAPI.number_of_trainings(trainer)
         @photo_name = PodioAPI.photo_name(trainer)
         @functions_can_train_in = PodioAPI.functions_can_train_in(trainer)
