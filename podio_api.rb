@@ -121,7 +121,8 @@ module PodioAPI
         if file_field.nil?
             return 'photo_not_found.jpg'
         else
-            return file_field['name']
+            file_extension = File.extname(file_field['name'])
+            return "#{ trainer.id }#{ file_extension }"
         end
     end
 
@@ -129,10 +130,10 @@ module PodioAPI
     def self.download_photo(trainer)
         file_field = get_single_value_field(trainer, 119866788)
         unless file_field.nil?
-            file_name = file_field['name']
+            file_extension = File.extname(file_field['name'])
             file_id = file_field['file_id']
 
-            File.open(("public/img/trainer_photos/#{ file_name }"), 'w+') do |downloaded_file|
+            File.open(("public/img/trainer_photos/#{ trainer.id }#{ file_extension }"), 'w+') do |downloaded_file|
                 f = Podio::FileAttachment.find(file_id)
                 downloaded_file.write(Podio.connection.get(f.link + "/extra_large").body)
             end
