@@ -64,6 +64,12 @@ module PodioAPI
     end
 
 
+    def self.current_position(trainer)
+        return get_single_value_field(trainer, 119866781)['text']
+    end
+
+
+
     def self.trainer_email(trainer)
         return get_single_value_field(trainer, 119866780)
     end
@@ -146,7 +152,7 @@ end
 class Trainer
     include Comparable
 
-    attr_reader :id, :name, :local_committee, :num_trainings, :photo_name, :functions_can_train_in, :badges
+    attr_reader :id, :name, :local_committee, :num_trainings, :photo_name, :functions_can_train_in, :badges, :current_position
 
     def initialize(trainer)
         @id = trainer.item_id
@@ -156,6 +162,7 @@ class Trainer
         @photo_name = PodioAPI.photo_name(trainer)
         @functions_can_train_in = PodioAPI.functions_can_train_in(trainer)
         @badges = PodioAPI.badges(trainer)
+        @current_position = PodioAPI.current_position(trainer)
     end
 
     def to_s()
